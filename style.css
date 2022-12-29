@@ -1,5 +1,65 @@
+* {
+    font-family: 'Big Shoulders Stencil Display', cursive;
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    margin: 0 auto;
+}
+
 h1 {
+    margin: auto;
     text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 10px;
+    width: 500px;
+    /* border: 1px solid red; */
+}
+
+.countdown-timer {
+    border: 1px solid orangered;
+    /* vertical-align: middle; */
+    align-content: center;
+    display: grid;
+    width: 600px;
+    margin: 10px;
+    /* max-height: 50px; */
+    grid-template-rows: 50% 50%;
+}
+
+.main-timer {
+    align-self: center;
+    font-size: 50px;
+    font-weight: bold;
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    max-width: 500px;
+    /* margin: 1em; */
+    /* padding: 1em; */
+    border: 1px solid red
+}
+
+.ms-timer {
+    max-width: 500px;
+    margin: 8px;
+    padding: 12px;
+    text-align: right;
+    border: 1px solid red;
+}
+
+.controls {
+    display: grid;
+    /* border: 1px solid salmon; */
+    padding: 10px;
+    max-width: 500px;
+    grid-template-columns: 50% 50%;
+    margin: 10px;
 }
 
 .numpad {
@@ -8,19 +68,12 @@ h1 {
     max-width: 300px;
     grid-template-columns: 20% 20% 20% 20% 20%;
     grid-template-rows: 50% 50%;
+    font-size: x-large;
+    font-weight: bold;
 }
 
 .function-buttons {
     background-color: antiquewhite;
-}
-
-.controls {
-    display: grid;
-    border: 1px solid salmon;
-    padding: 10px;
-    max-width: 400px;
-    grid-template-columns: 50% 50%;
-    margin: 10px;
 }
 
 .control-buttons {
@@ -38,38 +91,11 @@ h1 {
     max-width: 50px;
 }
 
-.countdown-timer {
-    border: 1px solid orangered;
-    display: grid;
-    max-width: 300px;
-    margin: 10px;
-    /* max-height: 50px; */
-    grid-template-rows: 50% 50%;
-}
-
-.main-timer {
-    display: grid;
-    grid-template-columns: 20% 20% 20% 20% 20%;
-    max-width: 300px;
-    margin: 1em;
-    padding: 1em;
-    border: 1px solid red
 
 
-}
 
-.ms-timer {
-    margin: 10px;
-    text-align: right;
-    border: 1px solid red;
-}
 
-.container {
-    margin: 0 auto;
-    padding: 10px;
-    max-width: 300px;
-    border: 1px solid red;
-}
+
 
 .noselect {
     user-select: none;
