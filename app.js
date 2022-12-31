@@ -84,7 +84,6 @@ function onNumpad(event) {
     updateTimer();
 }
 
-
 const pressedNumbers = {
     count: 0,
     data: [0, 0, 0, 0, 0, 0]
@@ -183,10 +182,6 @@ const countdown = {
 };
 
 function onSet() {
-    // curr time time
-    // const currTimeMs = getCurrTimeMs();
-
-    // target time
     const timeVal = Object.values(getCountdownTime());
     countdown.targetTimeMs = fromTimeToMs(...timeVal);
 
@@ -196,45 +191,16 @@ function onSet() {
 
     countdown.timeLeft = countdown.targetTimeMs;
     updateCountdownTime(...Object.values(fromMsToTime(countdown.timeLeft)));
-    // hide numpad
-    // hide function-buttons
     showHideControls();
+    showStartButton();
 }
 
 function onStart() {
-
     startBtn.classList.add('hide');
     pauseBtn.classList.remove('hide');
 
-    countdown.intervalId = setInterval(() => {
-        countdown.timeLeft -= 1000;
-
-        // update countdown timer
-        updateCountdownTime(...Object.values(fromMsToTime(countdown.timeLeft)));
-
-        // update ms-timer
-        if (countdown.timeLeft <= 0) {
-            clearInterval(countdown.intervalId);
-        }
-        console.log(countdown.timeLeft);
-        
-    }, 1000);
-    
-    
-    countdown.msInterval = setInterval(() => {
-        updateMS(countdown.msLeft);
-        countdown.msLeft -= 22;
-        
-        if (countdown.msLeft <= 1) {
-            countdown.msLeft = 999;
-        }
-        
-        if (countdown.timeLeft <= 0) {
-            updateMS(0);
-            clearInterval(countdown.msInterval);
-        }
-        
-    }, 22);
+    countdown.intervalId = setTimeInterval();
+    countdown.msInterval = setMsInterval();
 }
 
 function onContinue() {
@@ -242,36 +208,8 @@ function onContinue() {
 
     switchPauseContinue();
 
-    // here is the problem ( make it globally )
-    countdown.intervalId = setInterval(() => {
-        countdown.timeLeft -= 1000;
-
-        // update countdown timer
-        updateCountdownTime(...Object.values(fromMsToTime(countdown.timeLeft)));
-        
-        
-        // update ms-timer
-        if (countdown.timeLeft <= 0) {
-            clearInterval(countdown.intervalId);
-        }
-        console.log(countdown.timeLeft);
-        
-    }, 1000);
-
-    countdown.msInterval = setInterval(() => {
-        updateMS(countdown.msLeft);
-        countdown.msLeft -= 21;
-        
-        if (countdown.msLeft <= 1) {
-            countdown.msLeft = 999;
-        }
-        
-        if (countdown.timeLeft <= 0) {
-            updateMS(0);
-            clearInterval(countdown.msInterval);
-        }
-        
-    }, 20);
+    countdown.intervalId = setTimeInterval();
+    countdown.msInterval = setMsInterval();
 }
 
 function updateMS(ms) {
@@ -303,9 +241,19 @@ function onClear2() {
     
     // update object holding data info
 
-    document.querySelector('#pauseBtn').classList.add('hide');
-    document.querySelector('#continueBtn').classList.add('hide');
-    document.querySelector('#startBtn').classList.remove('hide');
+    showStartButton();
+    stopAlarmSound();
+}
+
+function showStartButton() {
+    domElem('#continueBtn').classList.add('hide');
+    domElem('#pauseBtn').classList.add('hide');
+
+    domElem('#startBtn').classList.remove('hide');
+}
+
+function domElem(selector) {
+    return document.querySelector(selector);
 }
 
 function onBack() {
@@ -382,10 +330,7 @@ function addControlButtons() {
 }
 
 function switchPauseContinue() {
-    // const pauseBtn = document.querySelector('#pauseBtn').classList;
-
     const pauseHasHideClass = document.querySelector('#pauseBtn').classList.contains('hide');
-    console.log(pauseHasHideClass);
 
     if (pauseHasHideClass) {
         document.querySelector('#pauseBtn').classList.remove('hide');
@@ -394,4 +339,52 @@ function switchPauseContinue() {
         document.querySelector('#pauseBtn').classList.add('hide');
         document.querySelector('#continueBtn').classList.remove('hide');
     }
+}
+
+function startAlarmSound() {
+    countdown.audio = new Audio('Alarm-Clock.mp3'); // not the best idea
+    countdown.audio.load();
+    countdown.audio.play();
+    countdown.audio.loop = true;
+}
+
+function stopAlarmSound() {
+    countdown.audio.pause();
+}
+
+function setTimeInterval() {
+    return setInterval(() => {
+        countdown.timeLeft -= 1000;
+
+        // update countdown timer
+        
+        updateCountdownTime(...Object.values(fromMsToTime(countdown.timeLeft)));
+
+        // update ms-timer
+        if (countdown.timeLeft < 1) {
+            domElem('#pauseBtn').classList.add('hide');
+            startAlarmSound();
+            clearInterval(countdown.intervalId);
+        }
+
+    }, 1000);
+}
+
+function setMsInterval() {
+    return setInterval(() => {
+        updateMS(countdown.msLeft);
+        countdown.msLeft -= 21;
+
+        
+
+        if (countdown.timeLeft < 1 && countdown.msLeft <= 1) {
+            updateMS(0);
+            clearInterval(countdown.msInterval);
+        }
+
+        if (countdown.msLeft <= 1) {
+            countdown.msLeft = 999;
+        }
+
+    }, 20);
 }
