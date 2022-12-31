@@ -375,8 +375,6 @@ function setMsInterval() {
         updateMS(countdown.msLeft);
         countdown.msLeft -= 21;
 
-        
-
         if (countdown.timeLeft < 1 && countdown.msLeft <= 1) {
             updateMS(0);
             clearInterval(countdown.msInterval);
