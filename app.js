@@ -53,16 +53,17 @@ function addCountdownTimer(countdownTimer) {
         }
         mainTimer.appendChild(currDiv);
     }
+    mainTimer.appendChild(msTimer);
 
     countdownTimer.appendChild(mainTimer);
-    countdownTimer.appendChild(msTimer);
+    // countdownTimer.appendChild(msTimer);
 }
 
 function addNumpadButtons(numpad) {
     for (let i = 0; i < 10; i++) {
         let btn = document.createElement('div');
         btn.innerText = i;
-        btn.classList.add('button');
+        btn.classList.add('numpad-button');
         btn.id = i;
         numpad.appendChild(btn);
     }
@@ -75,7 +76,7 @@ function onNumpad(event) {
 
     // pressedNumbers.count < 6 because there are 3 two digit numbers
     // and we don't need changes after that
-    if (clicked.tagName == 'DIV' && clicked.className == 'button' && pressedNumbers.count < 6) {
+    if (clicked.tagName == 'DIV' && clicked.className == 'numpad-button' && pressedNumbers.count < 6) {
         // move numbers to the left
         pressedNumbers.data.push(Number(clicked.textContent));
         pressedNumbers.data.shift();
@@ -304,29 +305,39 @@ function addControlButtons() {
 
     const startBtn = document.createElement('div');
     startBtn.id = 'startBtn';
-    startBtn.textContent = 'Start';
+    startBtn.textContent = 'START';
+    startBtn.classList.add('button');
 
     const pauseBtn = document.createElement('div');
     pauseBtn.id = 'pauseBtn';
     pauseBtn.classList.add('hide');
-    pauseBtn.textContent = 'Pause';
+    pauseBtn.textContent = 'PAUSE';
+    pauseBtn.classList.add('button');
 
     const continueBtn = document.createElement('div');
     continueBtn.id = 'continueBtn';
     continueBtn.classList.add('hide');
-    continueBtn.textContent = 'Continue';
-
+    continueBtn.textContent = 'CONTINUE';
+    continueBtn.classList.add('button');
 
     const clearBtn = document.createElement('div');
     clearBtn.id = 'clearBtn2';
-    clearBtn.textContent = 'Clear';
+    clearBtn.textContent = 'CLEAR';
+    clearBtn.classList.add('button');
+
+    const backBtn = document.createElement('div');
+    backBtn.id = 'backBtn';
+    backBtn.textContent = '<< Back';
+    backBtn.classList.add('hide');
 
     controlButtons.appendChild(startBtn);
     controlButtons.appendChild(pauseBtn);
     controlButtons.appendChild(continueBtn);
     controlButtons.appendChild(clearBtn);
 
+    
     container.appendChild(controlButtons);
+    container.appendChild(backBtn);
 }
 
 function switchPauseContinue() {
@@ -349,7 +360,13 @@ function startAlarmSound() {
 }
 
 function stopAlarmSound() {
-    countdown.audio.pause();
+    const hasAudio = countdown.audio;
+
+    if (hasAudio) {
+        countdown.audio.pause();
+    } else {
+        countdown.audio = new Audio('Alarm-Clock.mp3');
+    }
 }
 
 function setTimeInterval() {
